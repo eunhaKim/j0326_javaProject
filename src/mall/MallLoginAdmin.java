@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 
 public class MallLoginAdmin extends JFrame{
 	private static final Border red = null;
-	private NumberButton btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnExit, btnLogin;
+	private NumberButton btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnExit, btnLogin, btnDel;
 	private RoundedButton btnAdminLogin, btnUserLogin;
 	private JTextField txtInput;
 	
@@ -65,7 +65,7 @@ public class MallLoginAdmin extends JFrame{
 		pn1.add(lblNewLabel);
 		
 		JLabel lblBg = new JLabel("");
-		lblBg.setIcon(new ImageIcon(MallLoginAdmin.class.getResource("/img/loginBg.jpg")));
+		lblBg.setIcon(new ImageIcon(MallLoginAdmin.class.getResource("/img/loginBg.gif")));
 		lblBg.setBounds(0, 0, 389, 463);
 		pn1.add(lblBg);
 		
@@ -74,6 +74,14 @@ public class MallLoginAdmin extends JFrame{
 		pn2.setBounds(391, 0, 395, 463);
 		getContentPane().add(pn2);
 		pn2.setLayout(null);
+		
+		btnDel = new NumberButton("접속");
+		btnDel.setText("X");
+		btnDel.setForeground(Color.WHITE);
+		btnDel.setFont(new Font("굴림", Font.BOLD, 16));
+		btnDel.setBackground(new Color(19, 137, 201));
+		btnDel.setBounds(354, 0, 40, 117);
+		pn2.add(btnDel);
 		
 		btn1 = new NumberButton("1");
 		
@@ -166,17 +174,20 @@ public class MallLoginAdmin extends JFrame{
 		txtInput.setForeground(new Color(4, 73, 150));
 		txtInput.setHorizontalAlignment(SwingConstants.CENTER);
 		txtInput.setFont(new Font("굴림", Font.PLAIN, 28));
-		txtInput.setBounds(10, 10, 375, 96);
+		txtInput.setBounds(10, 10, 344, 96);
 		txtInput.setBorder(new EmptyBorder(5,3,5,3));
 		pn2.add(txtInput);
 		txtInput.setColumns(10);
 		
+		
+		
 		// ----------------------------------------------------------
 		setLocationRelativeTo(null);
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		// ----------------------------------------------------------
-		// 숫자버트
+		// 숫자버튼
 		btn1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				NumBtnCheck(1);
@@ -227,6 +238,12 @@ public class MallLoginAdmin extends JFrame{
 				NumBtnCheck(0);
 			}
 		});
+		// 한글자 지우기 버튼
+		btnDel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!txtInput.getText().equals("")) txtInput.setText(txtInput.getText().substring(0,txtInput.getText().length()-1));
+			}
+		});
 		// 어드민 로그인 버튼
 		btnAdminLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -242,7 +259,9 @@ public class MallLoginAdmin extends JFrame{
 		// 접속하기 버튼
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(txtInput.getText().equals("1234")) {
+				MemberDao dao = new MemberDao();
+				String pwd = dao.getAdminPwd();
+				if(txtInput.getText().equals(pwd)) {
 					JOptionPane.showMessageDialog(null, "관리자님으로 접속하였습니다.");
 					dispose();
 					new MallMain();
@@ -256,7 +275,7 @@ public class MallLoginAdmin extends JFrame{
 		// 종료 버튼
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int ans = JOptionPane.showConfirmDialog(null, "쇼핑몰 관리 시스템을 종료하시겠습니까?");
+				int ans = JOptionPane.showConfirmDialog(null, "쇼핑몰 관리 시스템을 종료하시겠습니까?","시즈템 종료창",JOptionPane.YES_NO_OPTION);
 				if(ans == 0) System.exit(0);
 			}
 		});

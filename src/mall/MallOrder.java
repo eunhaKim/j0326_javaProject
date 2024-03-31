@@ -1,12 +1,6 @@
 package mall;
 
 import java.awt.Color;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,34 +8,20 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Vector;
 
 import javax.swing.ImageIcon;
-import javax.swing.JScrollPane;
-import java.awt.FlowLayout;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
-import java.awt.GridLayout;
-import java.awt.BorderLayout;
-
-public class MallMain extends JFrame{
+public class MallOrder extends JFrame{
 	private JLabel lbLogo;
-	private RoundedButton btnMember, btnProduct, btnOrder, btnAddCart;
+	private RoundedButton btnMember, btnProduct, btnOrder;
 	private RoundedButton btnExit, btnLogout;
-	private JScrollPane scrollPane;
-	private JPanel pnProductList;
-	private JPanel pnProduct;
-	private JLabel lbPName, lbPPic;
 	
-	ProductDao pdao = new ProductDao();
-	private ProductVo pvo = null;
-	private Vector vData;
-	int res=0;
-	
-	public MallMain() {
-		super("그린몰 메인페이지");
+	public MallOrder() {
+		super("주문관리 페이지");
 		getContentPane().setBackground(new Color(4, 73, 150));
 		setSize(800,500);
 		getContentPane().setLayout(null);
@@ -97,67 +77,9 @@ public class MallMain extends JFrame{
 		btnLogout.setBounds(629, 15, 68, 23);
 		pn1.add(btnLogout);
 		
-		JPanel pn2 = new JPanel();
-		pn2.setBorder(null);
-		pn2.setBounds(0, 48, 786, 415);
-		getContentPane().add(pn2);
-		pn2.setLayout(null);
-		
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 10, 548, 395);
-		pn2.add(scrollPane);
-		
-		pnProductList = new JPanel();
-		pnProductList.setBorder(null);
-		pnProductList.setBackground(new Color(255, 255, 255));
-		scrollPane.setViewportView(pnProductList);
-		pnProductList.setLayout(new GridLayout(0, 4, 0, 0));
-		
-		vData = pdao.getProductList();
-		for(int i=0; i<vData.size() ; i++) {
-			System.out.println(vData.get(i));
-		}
-		
-		pnProduct = new JPanel();
-		pnProduct.setBorder(null);
-		pnProductList.add(pnProduct);
-		pnProduct.setBackground(new Color(255, 255, 255));
-		pnProduct.setLayout(null);
-		
-		btnAddCart = new RoundedButton("장바구니 추가");
-		btnAddCart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnAddCart.setText("장바구니 추가");
-		btnAddCart.setForeground(Color.WHITE);
-		btnAddCart.setFont(new Font("맑은 고딕", Font.PLAIN, 11));
-		btnAddCart.setBackground(new Color(4, 73, 150));
-		btnAddCart.setBounds(17, 92, 93, 20);
-		pnProduct.add(btnAddCart);
-		
-		lbPPic = new JLabel("New label");
-		lbPPic.setIcon(new ImageIcon("pImages/product.jpg"));
-		lbPPic.setBounds(10, 10, 107, 106);
-		pnProduct.add(lbPPic);
-		
-		lbPName = new JLabel("상품명");
-		lbPName.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
-		lbPName.setHorizontalAlignment(SwingConstants.CENTER);
-		lbPName.setBounds(10, 123, 107, 15);
-		pnProduct.add(lbPName);
-		
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(255, 255, 255));
-		panel.setBounds(568, 39, 207, 207);
-		pn2.add(panel);
-		panel.setLayout(null);
-		
-		JLabel lblNewLabel_10 = new JLabel("장바구니");
-		lblNewLabel_10.setBounds(572, 15, 135, 15);
-		pn2.add(lblNewLabel_10);
-		lblNewLabel_10.setIcon(new ImageIcon(MallMain.class.getResource("/img/icoCart.png")));
-		lblNewLabel_10.setFont(new Font("맑은 고딕", Font.PLAIN, 14));
+		panel.setBounds(0, 48, 786, 415);
+		getContentPane().add(panel);
 		
 		
 // ----------------------------------------------------------
@@ -234,9 +156,8 @@ public class MallMain extends JFrame{
 				if(ans == 0) System.exit(0);
 			}
 		});
-			
 	}
 	public static void main(String[] args) {
-		new MallMain();
+		new MallOrder();
 	}
 }

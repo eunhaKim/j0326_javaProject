@@ -19,14 +19,18 @@ import javax.swing.JTextField;
 
 public class MallLoginUser extends JFrame{
 	private static final Border red = null;
-	private NumberButton btnReset, btnExit, btnLogin;
+	private NumberButton btnReset, btnJoin, btnLogin;
 	private RoundedButton btnAdminLogin, btnUserLogin;
 	private JTextField txtId, txtPwd;
 	private JLabel lbId,lbPwd,line1,line3,line2;
 	
+	private MemberDao dao = new MemberDao();
+	private MemberVo vo = null;
+	int res=0;
+	
 	
 	public MallLoginUser() {
-		super("관리자로그인");
+		super("사용자로그인");
 		getContentPane().setBackground(new Color(255, 255, 255));
 		setSize(800,500);
 		getContentPane().setLayout(null);
@@ -66,7 +70,7 @@ public class MallLoginUser extends JFrame{
 		pn1.add(lblNewLabel);
 		
 		JLabel lblBg = new JLabel("");
-		lblBg.setIcon(new ImageIcon(MallLoginUser.class.getResource("/img/loginBg.jpg")));
+		lblBg.setIcon(new ImageIcon(MallLoginUser.class.getResource("/img/loginBg.gif")));
 		lblBg.setBounds(0, 0, 389, 463);
 		pn1.add(lblBg);
 		
@@ -99,14 +103,16 @@ public class MallLoginUser extends JFrame{
 		btnReset.setBounds(129, 374, 133, 87);
 		pn2.add(btnReset);
 		
-		btnExit = new NumberButton("종료");
-		btnExit.setForeground(new Color(255, 255, 255));
-		btnExit.setFont(new Font("굴림", Font.BOLD, 16));
-		btnExit.setBackground(new Color(19, 137, 201));
-		btnExit.setBounds(-3, 374, 133, 87);
-		pn2.add(btnExit);
+		btnJoin = new NumberButton("종료");
+		btnJoin.setText("회원가입");
+		btnJoin.setForeground(new Color(255, 255, 255));
+		btnJoin.setFont(new Font("굴림", Font.BOLD, 16));
+		btnJoin.setBackground(new Color(19, 137, 201));
+		btnJoin.setBounds(-3, 374, 133, 87);
+		pn2.add(btnJoin);
 		
 		btnLogin = new NumberButton("접속");
+		btnLogin.setText("로그인");
 		
 		btnLogin.setForeground(new Color(255, 255, 255));
 		btnLogin.setFont(new Font("굴림", Font.BOLD, 16));
@@ -118,7 +124,7 @@ public class MallLoginUser extends JFrame{
 		txtId.setForeground(new Color(0, 0, 160));
 		txtId.setHorizontalAlignment(SwingConstants.CENTER);
 		txtId.setFont(new Font("굴림", Font.PLAIN, 28));
-		txtId.setBounds(2, 92, 393, 87);
+		txtId.setBounds(2, 106, 393, 73);
 		txtId.setBorder(new EmptyBorder(5,3,5,3));
 		pn2.add(txtId);
 		txtId.setColumns(10);
@@ -129,7 +135,7 @@ public class MallLoginUser extends JFrame{
 		txtPwd.setFont(new Font("굴림", Font.PLAIN, 28));
 		txtPwd.setColumns(10);
 		txtPwd.setBorder(new EmptyBorder(5,3,5,3));
-		txtPwd.setBounds(1, 270, 393, 94);
+		txtPwd.setBounds(1, 285, 393, 79);
 		pn2.add(txtPwd);
 		
 		lbId = new JLabel("아이디");
@@ -148,6 +154,7 @@ public class MallLoginUser extends JFrame{
 		
 		// ----------------------------------------------------------
 		setLocationRelativeTo(null);
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		// ----------------------------------------------------------
@@ -162,6 +169,7 @@ public class MallLoginUser extends JFrame{
 		// 사용자 로그인 버튼
 		btnUserLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
 		// 다시입력 버튼
@@ -169,18 +177,35 @@ public class MallLoginUser extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				txtId.setText(null);
 				txtPwd.setText(null);
+				txtId.requestFocus();
 			}
 		});
-		// 접속하기 버튼
+		// 로그인 버튼
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				vo = dao.getIdSearch(txtId.getText());
+				if(vo.getId().equals("")) {
+					JOptionPane.showMessageDialog(null, "해당 아이디가 없습니다. 다시 입력해주세요.");
+					txtId.requestFocus();
+				}
+				else {
+					if(vo.getPwd().equals(txtPwd.getText())) {
+						JOptionPane.showMessageDialog(null, "로그인 되었습니다. 메인으로 이동합니다.");
+						dispose();
+						new MallMain();
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "비밀번호가 틀립니다.. 다시 입력해주세요.");
+						txtPwd.requestFocus();
+					}
+				}
 			}
 		});
-		// 종료 버튼
-		btnExit.addActionListener(new ActionListener() {
+		// 회원가입 버튼
+		btnJoin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int ans = JOptionPane.showConfirmDialog(null, "쇼핑몰 관리 시스템을 종료하시겠습니까?");
-				if(ans == 0) System.exit(0);
+				dispose();
+				new MallJoinUser();
 			}
 		});
 	}
